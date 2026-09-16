@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  orvix-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      ENVIRONMENT: local
+      LOG_LEVEL: INFO
+      # Local dev uses SQLite by default (zero extra services required).
+      # Uncomment the next line + the `postgres` service below for Postgres.
+      # DATABASE_URL: postgresql+asyncpg://orvix:orvix@postgres:5432/orvix
+      LLM_PROVIDER: mock
+      VECTOR_STORE: memory
+      ENABLE_AUTO_REMEDIATION: "true"
+      DRY_RUN: "false"
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    volumes:
+      - ./knowledge:/app/knowledge:ro
+
+  # Optional: production-shaped Postgres backend. Disabled by default so the
+  # demo runs with zero extra services; enable by uncommenting this block and
+  # the DATABASE_URL override above.
+  # postgres:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: orvix
+  #     POSTGRES_PASSWORD: orvix
+  #     POSTGRES_DB: orvix
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - orvix_pgdata:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U orvix"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 10
+
+# volumes:
+#   orvix_pgdata:
