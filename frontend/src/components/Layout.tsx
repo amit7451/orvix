@@ -1,87 +1,127 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ShieldCheck, LayoutDashboard, BarChart3, Database, Wrench, Bell } from 'lucide-react';
+import {
+  ShieldCheck, LayoutDashboard, Server, AlertTriangle, Zap, BarChart3,
+  Database, Wrench, Bell, Wifi, WifiOff
+} from 'lucide-react';
+import { API_BASE, WS_BASE } from '../types';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
+const navItems = [
+  { path: '/', label: 'Dashboard', icon: LayoutDashboard, section: 'overview' },
+  { path: '/services', label: 'Services', icon: Server, section: 'overview' },
+  { path: '/incidents', label: 'Incidents', icon: AlertTriangle, section: 'overview' },
+  { path: '/simulation', label: 'Simulation', icon: Zap, section: 'operations' },
+  { path: '/analytics', label: 'Analytics', icon: BarChart3, section: 'intelligence' },
+  { path: '/knowledge', label: 'Knowledge Base', icon: Database, section: 'intelligence' },
+  { path: '/tools', label: 'Tool Registry', icon: Wrench, section: 'intelligence' },
+  { path: '/notifications', label: 'Notifications', icon: Bell, section: 'intelligence' },
+];
+
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const isAdmin = location.pathname.startsWith('/admin');
+  const [wsConnected, setWsConnected] = useState(false);
+  const [pendingApprovals, setPendingApprovals] = useState(0);
+
+  // WebSocket connection status
+  useEffect(() => {
+    let ws: WebSocket | null = null;
+    const connect = () => {
+      ws = new WebSocket(`${WS_BASE}/ws/events`);
+      ws.onopen = () => setWsConnected(true);
+      ws.onclose = () => {
+        setWsConnected(false);
+        setTimeout(connect, 3000);
+      };
+      ws.onerror = () => setWsConnected(false);
+    };
+    connect();
+    return () => { ws?.close(); };
+  }, []);
+
+  // Poll pending approvals for badge
+  useEffect(() => {
+    const poll = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/approvals?decision=PENDING`);
+        if (res.ok) {
+          const data = await res.json();
+          setPendingApprovals(data.length);
+        }
+      } catch {}
+    };
+    poll();
+    const interval = setInterval(poll, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isActive = (path: string) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
+
+  const sections: Record<string, string> = {
+    overview: 'Monitoring',
+    operations: 'Operations',
+    intelligence: 'Intelligence',
+  };
+
+  const groupedItems = navItems.reduce((acc, item) => {
+    if (!acc[item.section]) acc[item.section] = [];
+    acc[item.section].push(item);
+    return acc;
+  }, {} as Record<string, typeof navItems>);
 
   return (
-    <div className="app-container" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <header className="main-header" style={{ flexShrink: 0 }}>
-        <div className="header-brand">
-          <ShieldCheck size={28} />
-          ORVIX
+    <div className="app-container">
+      <header className="main-header">
+        <div className="header-brand" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
+          <ShieldCheck size={24} />
+          <span>ORVIX</span>
+          <span className="brand-tag">AI Platform</span>
         </div>
         
         <div className="header-actions">
-          <span className="text-sm text-muted">Role View:</span>
-          <label className="switch-label text-sm">
-            User
-            <div className="switch">
-              <input 
-                type="checkbox" 
-                checked={isAdmin} 
-                onChange={(e) => {
-                  navigate(e.target.checked ? '/admin' : '/');
-                }}
-              />
-              <span className="slider"></span>
-            </div>
-            Admin
-          </label>
+          <div className="connection-indicator">
+            <div className={`connection-dot ${wsConnected ? '' : 'offline'}`} />
+            {wsConnected ? (
+              <><Wifi size={13} /> Live</>
+            ) : (
+              <><WifiOff size={13} /> Offline</>
+            )}
+          </div>
         </div>
       </header>
       
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {isAdmin && (
-          <aside style={{ width: '250px', borderRight: '1px solid var(--border)', backgroundColor: 'var(--card)', display: 'flex', flexDirection: 'column' }}>
-            <nav style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <button 
-                onClick={() => navigate('/admin')}
-                className={`btn ${location.pathname === '/admin' ? 'btn-outline' : 'btn-ghost'}`}
-                style={{ justifyContent: 'flex-start', border: location.pathname === '/admin' ? '1px solid var(--border)' : 'none' }}
-              >
-                <LayoutDashboard size={18} className="mr-2 text-muted" /> Control Center
-              </button>
-              <button 
-                onClick={() => navigate('/admin/analytics')}
-                className={`btn ${location.pathname === '/admin/analytics' ? 'btn-outline' : 'btn-ghost'}`}
-                style={{ justifyContent: 'flex-start', border: location.pathname === '/admin/analytics' ? '1px solid var(--border)' : 'none' }}
-              >
-                <BarChart3 size={18} className="mr-2 text-muted" /> Analytics
-              </button>
-              <button 
-                onClick={() => navigate('/admin/knowledge')}
-                className={`btn ${location.pathname === '/admin/knowledge' ? 'btn-outline' : 'btn-ghost'}`}
-                style={{ justifyContent: 'flex-start', border: location.pathname === '/admin/knowledge' ? '1px solid var(--border)' : 'none' }}
-              >
-                <Database size={18} className="mr-2 text-muted" /> Knowledge Base
-              </button>
-              <button 
-                onClick={() => navigate('/admin/tools')}
-                className={`btn ${location.pathname === '/admin/tools' ? 'btn-outline' : 'btn-ghost'}`}
-                style={{ justifyContent: 'flex-start', border: location.pathname === '/admin/tools' ? '1px solid var(--border)' : 'none' }}
-              >
-                <Wrench size={18} className="mr-2 text-muted" /> Tool Registry
-              </button>
-              <button 
-                onClick={() => navigate('/admin/notifications')}
-                className={`btn ${location.pathname === '/admin/notifications' ? 'btn-outline' : 'btn-ghost'}`}
-                style={{ justifyContent: 'flex-start', border: location.pathname === '/admin/notifications' ? '1px solid var(--border)' : 'none' }}
-              >
-                <Bell size={18} className="mr-2 text-muted" /> Notifications
-              </button>
-            </nav>
-          </aside>
-        )}
+      <div className="app-body">
+        <aside className="sidebar">
+          <nav className="sidebar-nav">
+            {Object.entries(groupedItems).map(([section, items]) => (
+              <React.Fragment key={section}>
+                <div className="sidebar-section-label">{sections[section]}</div>
+                {items.map(item => (
+                  <button
+                    key={item.path}
+                    onClick={() => navigate(item.path)}
+                    className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
+                  >
+                    <item.icon size={17} />
+                    {item.label}
+                    {item.path === '/incidents' && pendingApprovals > 0 && (
+                      <span className="nav-badge">{pendingApprovals}</span>
+                    )}
+                  </button>
+                ))}
+              </React.Fragment>
+            ))}
+          </nav>
+        </aside>
         
-        <main className="main-content" style={{ flex: 1, overflowY: 'auto', padding: '2rem' }}>
+        <main className="main-content">
           {children}
         </main>
       </div>
