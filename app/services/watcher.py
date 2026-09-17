@@ -11,6 +11,7 @@ import asyncio
 import logging
 
 from app.core.container import get_anomaly_detector, get_metrics_provider, get_simulation_registry
+from app.core.events import EventType, event_bus
 from app.db.session import SessionLocal
 from app.incidents.service import incident_service
 from app.schemas.incident import IncidentCreate
@@ -52,6 +53,15 @@ class MonitoringWatcher:
                 if duplicate:
                     # Skip creating new incident if one is already open for this issue
                     continue
+
+                await event_bus.publish(
+                    EventType.WATCHER_ANOMALY,
+                    service=service_name,
+                    metric=top.metric,
+                    anomaly_score=top.anomaly_score,
+                    value=round(top.current_value, 2),
+                    threshold=round(top.threshold, 2),
+                )
 
                 incident = await incident_service.create(
                     db,

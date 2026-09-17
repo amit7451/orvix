@@ -19,6 +19,14 @@ class Settings(BaseSettings):
     environment: Literal["local", "staging", "production"] = "local"
     log_level: str = "INFO"
 
+    # --- Observability ---
+    metrics_provider: Literal["mock", "prometheus"] = "mock"
+    prometheus_url: str = "http://localhost:9090"
+    logs_provider: Literal["mock", "loki"] = "mock"
+    loki_url: str = "http://localhost:3100"
+    traces_provider: Literal["mock", "jaeger"] = "mock"
+    jaeger_url: str = "http://localhost:16686"
+
     # --- Database ---
     database_url: str = "sqlite+aiosqlite:///./orvix.db"
 
@@ -32,7 +40,8 @@ class Settings(BaseSettings):
     llm_max_retries: int = 2
 
     # --- Vector store / RAG ---
-    vector_store: Literal["memory", "chroma", "pgvector"] = "memory"
+    vector_store: Literal["memory", "chroma", "pgvector", "qdrant"] = "memory"
+    qdrant_url: str = "http://localhost:16333"
     embedding_dim: int = 256
     retrieval_top_k: int = 5
     rerank_enabled: bool = True
@@ -43,6 +52,7 @@ class Settings(BaseSettings):
     notification_email_from: str | None = None
 
     # --- Safety / automation ---
+    remediation_engine: Literal["mock", "docker"] = "mock"
     enable_auto_remediation: bool = True
     dry_run: bool = False
     approval_timeout_seconds: int = 900

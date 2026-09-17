@@ -40,5 +40,33 @@ services:
   #     timeout: 5s
   #     retries: 10
 
-# volumes:
-#   orvix_pgdata:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "16333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus_data:/prometheus
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+
+volumes:
+  orvix_pgdata:
+  qdrant_data:
+  prometheus_data:

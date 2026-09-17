@@ -26,6 +26,12 @@ async def learn(state: dict) -> dict:
             if incident.status != IncidentStatus.RESOLVED:
                 await incident_service.transition(db, incident, IncidentStatus.RESOLVED, actor="orvix-agent",
                                                     note="Independent verification passed; incident resolved.")
+            await incident_service.add_event(
+                db, incident, "LEARN",
+                "Incident resolution consolidated into long-term organizational memory. Post-incident notifications dispatched.",
+                data={"plan_summary": plan_summary, "status": "RESOLVED"}
+            )
+            await db.commit()
 
         await notification_service.notify(
             channel="console",

@@ -96,8 +96,9 @@ export const Dashboard: React.FC = () => {
               {Object.entries(services).map(([name, svc]) => {
                 const status = getHealthStatus(svc);
                 return (
-                  <div key={name} className={`service-tile ${status === 'green' ? 'healthy' : status === 'amber' ? 'degraded' : 'unhealthy'}`}
-                       onClick={() => navigate('/services')}>
+                  <div key={name} className={`service-tile cursor-pointer hover:scale-105 transition-all ${status === 'green' ? 'healthy' : status === 'amber' ? 'degraded' : 'unhealthy'}`}
+                       title={`View live stats and failure reports for ${name}`}
+                       onClick={() => navigate(`/services/${name}`)}>
                     <div className="flex items-center gap-2 mb-2">
                       <div className={`health-dot ${status}`} />
                       <span className="text-xs font-semibold truncate">{name.replace('-service', '')}</span>

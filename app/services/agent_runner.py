@@ -87,3 +87,12 @@ async def _sync_run_from_result(db: AsyncSession, run: AgentRun, result: dict) -
     await db.flush()
     await db.commit()
     await db.refresh(run)
+
+    if run.status == "COMPLETED":
+        await event_bus.publish(
+            EventType.AGENT_COMPLETED,
+            incident_id=run.incident_id,
+            agent_run_id=run.id,
+            status=result.get("final_status", run.status),
+            final_stage=run.current_stage,
+        )

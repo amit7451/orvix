@@ -8,6 +8,7 @@ run. A human decision later resumes the graph via `Command(resume=...)`
 """
 from __future__ import annotations
 
+import asyncio
 from datetime import datetime, timedelta, timezone
 
 from langgraph.types import interrupt
@@ -106,4 +107,16 @@ async def authorize(state: dict) -> dict:
     state["proposed_actions"] = decided_actions
     state["approval_status"] = "RESOLVED"
     state["current_stage"] = "ACT"
+
+    async with SessionLocal() as db:
+        incident = await incident_service.get(db, state["incident_id"])
+        if incident:
+            await incident_service.add_event(
+                db, incident, "AUTHORIZE",
+                "I have evaluated the policy rules. All actions have been processed for authorization.",
+                data={"decided_actions": decided_actions}
+            )
+            await db.commit()
+
+    await asyncio.sleep(1.5)
     return state

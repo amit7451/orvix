@@ -60,7 +60,8 @@ export interface Approval {
   requested_action: {
     tool: string;
     target: string;
-    reason: string;
+    reason?: string;
+    reasons?: string[];
     arguments?: any;
     risk_level?: string;
   };
@@ -73,6 +74,7 @@ export interface Approval {
 }
 
 export interface EventData {
+  id?: string;
   type: string;
   timestamp: string;
   payload: any;
@@ -153,3 +155,61 @@ export const AGENT_STAGES = [
 ] as const;
 
 export type AgentStage = typeof AGENT_STAGES[number];
+
+export interface TelemetryHistoryPoint {
+  timestamp: string;
+  latency_ms: number;
+  error_rate: number;
+  cpu_percent: number;
+  memory_percent: number;
+  queue_depth: number;
+  db_connections_used: number;
+  db_connections_max: number;
+  throughput_rps: number;
+  healthy: boolean;
+}
+
+export interface DependencyServiceInfo {
+  name: string;
+  healthy: boolean;
+  latency_ms: number;
+  error_rate: number;
+  active_failures: string[];
+}
+
+export interface ServiceDetail {
+  service: Service;
+  telemetry: {
+    healthy: boolean;
+    latency_ms: number;
+    error_rate: number;
+    throughput_rps: number;
+    cpu_percent: number;
+    memory_percent: number;
+    db_connections_used: number;
+    db_connections_max: number;
+    queue_depth: number;
+  };
+  active_failures: Array<{
+    kind: string;
+    severity: number;
+    injected_at: string;
+    note: string;
+  }>;
+  history: TelemetryHistoryPoint[];
+  dependencies: {
+    upstream: DependencyServiceInfo[];
+    downstream: DependencyServiceInfo[];
+  };
+  logs: Array<{
+    level: string;
+    message: string;
+    timestamp: string;
+  }>;
+  events: Array<{
+    service: string;
+    event_type: string;
+    description: string;
+    timestamp: string;
+  }>;
+}

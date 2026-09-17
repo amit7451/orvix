@@ -2,9 +2,12 @@
 incident similarity search."""
 from __future__ import annotations
 
+import asyncio
+
 from app.core.container import get_retriever
 from app.core.events import EventType, event_bus
 from app.db.session import SessionLocal
+from app.incidents.service import incident_service
 from app.memory.long_term import find_similar_incidents
 
 
@@ -50,4 +53,18 @@ async def retrieve(state: dict) -> dict:
         documents_retrieved=len(retrieved_documents),
         similar_incidents=len(similar_incidents),
     )
+    
+    async with SessionLocal() as db:
+        incident = await incident_service.get(db, state["incident_id"])
+        if incident:
+            await incident_service.add_event(
+                db, 
+                incident, 
+                "RETRIEVE", 
+                f"I have successfully queried the Qdrant vector database and retrieved {len(retrieved_documents)} relevant runbook chunks and {len(similar_incidents)} similar historical incidents.", 
+                data={"retrieved_documents": retrieved_documents, "similar_incidents": similar_incidents}
+            )
+            await db.commit()
+            
+    await asyncio.sleep(1.5)
     return state

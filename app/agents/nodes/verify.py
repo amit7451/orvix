@@ -47,6 +47,12 @@ async def verify(state: dict) -> dict:
         incident = await incident_service.get(db, state["incident_id"])
         if incident is not None:
             await incident_service.update_fields(db, incident, verification={"results": verification_results, "passed": all_passed})
+            await incident_service.add_event(
+                db, incident, "VERIFY",
+                f"Post-remediation health verification {'PASSED' if all_passed else 'FAILED'}: telemetry criteria evaluated against service recovery limits.",
+                data={"results": verification_results, "passed": all_passed, "services": services}
+            )
+            await db.commit()
 
     state["verification_results"] = verification_results
     state["retry_count"] = state.get("retry_count", 0)

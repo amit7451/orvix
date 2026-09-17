@@ -2,6 +2,8 @@
 Denied/rejected actions never silently retry (Section 14)."""
 from __future__ import annotations
 
+import asyncio
+
 from app.core.config import settings
 from app.core.enums import IncidentStatus, RiskLevel, ToolResultStatus
 from app.core.events import EventType, event_bus
@@ -92,4 +94,16 @@ async def act(state: dict) -> dict:
         state["current_stage"] = "ESCALATE"
     else:
         state["current_stage"] = "VERIFY"
+        
+    async with SessionLocal() as db:
+        incident = await incident_service.get(db, state["incident_id"])
+        if incident:
+            await incident_service.add_event(
+                db, incident, "ACT",
+                "I have executed the authorized remediation tools.",
+                data={"executed_tools": executed_tools}
+            )
+            await db.commit()
+
+    await asyncio.sleep(1.5)
     return state

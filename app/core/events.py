@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import StrEnum
@@ -21,6 +22,7 @@ class EventType(StrEnum):
     INCIDENT_ESCALATED = "incident.escalated"
     AGENT_STARTED = "agent.started"
     AGENT_STATE_CHANGED = "agent.state_changed"
+    AGENT_COMPLETED = "agent.completed"
     EVIDENCE_COLLECTED = "evidence.collected"
     RAG_RETRIEVAL_COMPLETED = "rag.retrieval_completed"
     DIAGNOSIS_COMPLETED = "diagnosis.completed"
@@ -32,6 +34,7 @@ class EventType(StrEnum):
     VERIFICATION_STARTED = "verification.started"
     VERIFICATION_COMPLETED = "verification.completed"
     NOTIFICATION_SENT = "notification.sent"
+    WATCHER_ANOMALY = "watcher.anomaly"
 
 
 @dataclass
@@ -41,9 +44,17 @@ class Event:
     timestamp: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
+    id: str = field(
+        default_factory=lambda: f"evt_{uuid.uuid4().hex[:12]}"
+    )
 
     def to_json(self) -> str:
-        return json.dumps({"type": self.type, "timestamp": self.timestamp, "payload": self.payload})
+        return json.dumps({
+            "id": self.id,
+            "type": self.type,
+            "timestamp": self.timestamp,
+            "payload": self.payload,
+        })
 
 
 class EventBus:

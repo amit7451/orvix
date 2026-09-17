@@ -19,10 +19,16 @@ router = APIRouter(prefix="/api/approvals", tags=["approvals"])
 
 
 @router.get("", response_model=list[ApprovalOut])
-async def list_approvals(decision: ApprovalDecision | None = None, db: AsyncSession = Depends(get_db)):
+async def list_approvals(
+    decision: ApprovalDecision | None = None,
+    incident_id: str | None = None,
+    db: AsyncSession = Depends(get_db),
+):
     stmt = select(ApprovalRequest).order_by(ApprovalRequest.created_at.desc())
     if decision:
         stmt = stmt.where(ApprovalRequest.decision == decision)
+    if incident_id:
+        stmt = stmt.where(ApprovalRequest.incident_id == incident_id)
     result = await db.execute(stmt)
     return list(result.scalars().all())
 

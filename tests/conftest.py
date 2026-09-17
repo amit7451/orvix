@@ -3,7 +3,13 @@ from __future__ import annotations
 import os
 import asyncio
 
-os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///./test_orvix.db")
+os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///./test_orvix.db"
+os.environ["METRICS_PROVIDER"] = "mock"
+os.environ["LOGS_PROVIDER"] = "mock"
+os.environ["TRACES_PROVIDER"] = "mock"
+os.environ["LLM_PROVIDER"] = "mock"
+os.environ["VECTOR_STORE"] = "memory"
+os.environ["REMEDIATION_ENGINE"] = "mock"
 
 import pytest
 import pytest_asyncio
