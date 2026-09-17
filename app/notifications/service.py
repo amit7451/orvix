@@ -14,6 +14,7 @@ from typing import Any
 import httpx
 
 from app.core.config import settings
+from app.core.events import EventType, event_bus
 
 logger = logging.getLogger("orvix.notifications")
 
@@ -116,6 +117,13 @@ class NotificationService:
         if not delivered and channel != "console":
             # Fail soft to console so the on-call engineer still sees it.
             await self._adapters["console"].send(subject, body, meta)
+        await event_bus.publish(
+            EventType.NOTIFICATION_SENT,
+            channel=adapter.channel,
+            subject=subject,
+            delivered=delivered,
+            incident_id=incident_id,
+        )
         return {"channel": adapter.channel, "delivered": delivered, "incident_id": incident_id}
 
 

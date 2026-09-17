@@ -123,6 +123,11 @@ async def reason(state: dict) -> dict:
             if incident.status.value == "INVESTIGATING":
                 await incident_service.transition(db, incident, IncidentStatus.DIAGNOSED, actor="orvix-agent",
                                                     note=f"Diagnosis: {state['diagnosis']}")
+            await incident_service.add_event(
+                db, incident, "REASON", 
+                "I have synthesized the telemetry and historical context to form a diagnosis.", 
+                data=state["diagnosis_detail"]
+            )
             await db.commit()
 
     await event_bus.publish(

@@ -4,7 +4,8 @@ import {
   ShieldCheck, LayoutDashboard, Server, AlertTriangle, Zap, BarChart3,
   Database, Wrench, Bell, Wifi, WifiOff
 } from 'lucide-react';
-import { API_BASE, WS_BASE } from '../types';
+import { API_BASE } from '../types';
+import { useEventStream } from '../context/EventStreamContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -24,24 +25,8 @@ const navItems = [
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [wsConnected, setWsConnected] = useState(false);
+  const { connected: wsConnected } = useEventStream();
   const [pendingApprovals, setPendingApprovals] = useState(0);
-
-  // WebSocket connection status
-  useEffect(() => {
-    let ws: WebSocket | null = null;
-    const connect = () => {
-      ws = new WebSocket(`${WS_BASE}/ws/events`);
-      ws.onopen = () => setWsConnected(true);
-      ws.onclose = () => {
-        setWsConnected(false);
-        setTimeout(connect, 3000);
-      };
-      ws.onerror = () => setWsConnected(false);
-    };
-    connect();
-    return () => { ws?.close(); };
-  }, []);
 
   // Poll pending approvals for badge
   useEffect(() => {

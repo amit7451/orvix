@@ -28,17 +28,26 @@ def get_simulation_registry() -> SimulationRegistry:
 
 
 @lru_cache
-def get_metrics_provider() -> MockMetricsProvider:
+def get_metrics_provider():
+    if settings.metrics_provider == "prometheus":
+        from app.observability.metrics import PrometheusMetricsProvider
+        return PrometheusMetricsProvider(prometheus_url=settings.prometheus_url)
     return MockMetricsProvider(get_simulation_registry())
 
 
 @lru_cache
-def get_logs_provider() -> MockLogsProvider:
+def get_logs_provider():
+    if settings.logs_provider == "loki":
+        from app.observability.logs import LokiLogsProvider
+        return LokiLogsProvider(loki_url=settings.loki_url)
     return MockLogsProvider(get_simulation_registry())
 
 
 @lru_cache
-def get_traces_provider() -> MockTracesProvider:
+def get_traces_provider():
+    if settings.traces_provider == "jaeger":
+        from app.observability.tracing import JaegerTracesProvider
+        return JaegerTracesProvider(jaeger_url=settings.jaeger_url)
     return MockTracesProvider(get_simulation_registry())
 
 
@@ -53,7 +62,10 @@ def get_anomaly_detector() -> AnomalyDetector:
 
 
 @lru_cache
-def get_vector_store() -> InMemoryVectorStore:
+def get_vector_store():
+    if settings.vector_store == "qdrant":
+        from app.rag.vector_store import QdrantVectorStore
+        return QdrantVectorStore(url=settings.qdrant_url)
     return InMemoryVectorStore()
 
 

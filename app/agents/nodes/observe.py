@@ -2,7 +2,11 @@
 deployments and dependency status into an evidence package."""
 from __future__ import annotations
 
+import asyncio
 import logging
+
+from app.db.session import SessionLocal
+from app.incidents.service import incident_service
 
 from app.core.container import (
     get_anomaly_detector,
@@ -75,4 +79,16 @@ async def observe(state: dict) -> dict:
         services=services,
         anomaly_count=len(anomalies),
     )
+    async with SessionLocal() as db:
+        incident = await incident_service.get(db, state["incident_id"])
+        if incident:
+            await incident_service.add_event(
+                db, 
+                incident, 
+                "OBSERVE", 
+                "I am gathering live telemetry (metrics, logs, traces) for the affected services.", 
+                data=evidence
+            )
+            
+    await asyncio.sleep(1.5)
     return state

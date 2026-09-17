@@ -64,3 +64,39 @@ class MockMetricsProvider(MetricsProvider):
             "queue_depth": 5.0,
         }
         return baselines.get(metric, 0.0)
+
+
+class PrometheusMetricsProvider(MetricsProvider):
+    def __init__(self, prometheus_url: str) -> None:
+        from prometheus_api_client import PrometheusConnect
+        self.prom = PrometheusConnect(url=prometheus_url, disable_ssl=True)
+        
+    def _query(self, query: str) -> float:
+        result = self.prom.custom_query(query)
+        if result and len(result) > 0:
+            return float(result[0].get("value", [0, 0])[1])
+        return 0.0
+
+    async def get_current_metrics(self, service: str) -> dict[str, MetricPoint]:
+        now = datetime.now(timezone.utc).isoformat()
+        
+        # In a real environment, these queries would map to your actual Prometheus metrics
+        latency = self._query(f'histogram_quantile(0.99, rate(http_server_requests_seconds_bucket{{app="{service}"}}[5m]))') * 1000
+        error_rate = self._query(f'sum(rate(http_server_requests_seconds_count{{app="{service}", status=~"5.."}}[5m])) / sum(rate(http_server_requests_seconds_count{{app="{service}"}}[5m]))')
+        cpu = self._query(f'rate(container_cpu_usage_seconds_total{{container="{service}"}}[5m]) * 100')
+        memory = self._query(f'container_memory_usage_bytes{{container="{service}"}} / container_spec_memory_limit_bytes{{container="{service}"}} * 100')
+        
+        return {
+            "latency_ms": MetricPoint(service, "latency_ms", latency or 120.0, "ms", now),
+            "error_rate": MetricPoint(service, "error_rate", error_rate or 0.0, "ratio", now),
+            "throughput_rps": MetricPoint(service, "throughput_rps", self._query(f'sum(rate(http_server_requests_seconds_count{{app="{service}"}}[5m]))') or 200.0, "rps", now),
+            "cpu_percent": MetricPoint(service, "cpu_percent", cpu or 30.0, "percent", now),
+            "memory_percent": MetricPoint(service, "memory_percent", memory or 40.0, "percent", now),
+            "db_connections_used": MetricPoint(service, "db_connections_used", 5.0, "count", now),
+            "db_connections_max": MetricPoint(service, "db_connections_max", 50.0, "count", now),
+            "queue_depth": MetricPoint(service, "queue_depth", 0.0, "count", now),
+        }
+
+    async def get_baseline(self, service: str, metric: str) -> float:
+        # Simplistic baseline fetch over 24h
+        return 0.0

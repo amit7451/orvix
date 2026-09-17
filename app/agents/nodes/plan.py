@@ -2,7 +2,11 @@
 plan of typed tool actions with rollback + verification criteria."""
 from __future__ import annotations
 
+import asyncio
+
 from app.core.enums import RiskLevel
+from app.db.session import SessionLocal
+from app.incidents.service import incident_service
 from app.policy.risk import classify
 from app.tools.registry import tool_registry
 
@@ -83,4 +87,16 @@ async def plan(state: dict) -> dict:
         (a["risk_level"] for a in proposed_actions), key=lambda r: list(RiskLevel).index(RiskLevel(r)), default=RiskLevel.LOW
     ) if proposed_actions else RiskLevel.LOW
     state["current_stage"] = "AUTHORIZE"
+    
+    async with SessionLocal() as db:
+        incident = await incident_service.get(db, state["incident_id"])
+        if incident:
+            await incident_service.add_event(
+                db, incident, "PLAN",
+                "I have drafted a remediation plan based on the diagnosis, selecting the appropriate tools and assessing the risk level.",
+                data={"proposed_actions": proposed_actions, "overall_risk_level": state["risk_level"]}
+            )
+            await db.commit()
+            
+    await asyncio.sleep(1.5)
     return state

@@ -68,12 +68,36 @@ class ServiceState:
     healthy: bool = True
     active_failures: list[ActiveFailure] = field(default_factory=list)
     events: list[InfraEvent] = field(default_factory=list)
+    history: list[dict] = field(default_factory=list)
 
     def _rand_jitter(self, base: float, pct: float = 0.08) -> float:
         return base * (1 + random.uniform(-pct, pct))
 
+    def init_history(self) -> None:
+        """Pre-populate historical telemetry data points."""
+        if self.history:
+            return
+        now_dt = datetime.now(timezone.utc)
+        for i in range(30, 0, -1):
+            ts = (now_dt - timedelta(seconds=i * 5)).isoformat()
+            self.history.append({
+                "timestamp": ts,
+                "latency_ms": round(self._rand_jitter(110.0), 1),
+                "error_rate": round(self._rand_jitter(0.01, 0.05), 4),
+                "cpu_percent": round(self._rand_jitter(30.0), 1),
+                "memory_percent": round(self._rand_jitter(40.0), 1),
+                "queue_depth": max(0, int(self._rand_jitter(3))),
+                "db_connections_used": max(0, min(int(self._rand_jitter(8)), self.db_connections_max)),
+                "db_connections_max": self.db_connections_max,
+                "throughput_rps": round(self._rand_jitter(200.0), 1),
+                "healthy": True,
+            })
+
     def tick(self) -> None:
         """Recompute live telemetry from baseline + active failures."""
+        if not self.history:
+            self.init_history()
+
         latency = 110.0
         error_rate = 0.01
         cpu = 30.0
@@ -117,6 +141,21 @@ class ServiceState:
         self.throughput_rps = round(self._rand_jitter(200.0 * (0.4 if not healthy else 1.0)), 1)
         self.healthy = healthy and self.error_rate < 0.5
 
+        self.history.append({
+            "timestamp": _now(),
+            "latency_ms": self.latency_ms,
+            "error_rate": self.error_rate,
+            "cpu_percent": self.cpu_percent,
+            "memory_percent": self.memory_percent,
+            "queue_depth": self.queue_depth,
+            "db_connections_used": self.db_connections_used,
+            "db_connections_max": self.db_connections_max,
+            "throughput_rps": self.throughput_rps,
+            "healthy": self.healthy,
+        })
+        if len(self.history) > 60:
+            self.history = self.history[-60:]
+
     def synthesize_logs(self, limit: int = 50) -> list[dict]:
         logs = []
         if self.active_failures:
@@ -151,6 +190,7 @@ class SimulationRegistry:
     def __init__(self) -> None:
         self.services: dict[str, ServiceState] = {name: ServiceState(name=name) for name in SERVICE_NAMES}
         for name, state in self.services.items():
+            state.init_history()
             state.events.append(
                 InfraEvent(service=name, event_type="deployment", description="Initial baseline deployment",
                             timestamp=(datetime.now(timezone.utc) - timedelta(days=2)).isoformat())
@@ -159,6 +199,7 @@ class SimulationRegistry:
     def get_service_state(self, service: str) -> ServiceState:
         if service not in self.services:
             self.services[service] = ServiceState(name=service)
+            self.services[service].init_history()
         return self.services[service]
 
     def tick_all(self) -> None:
@@ -189,6 +230,74 @@ class SimulationRegistry:
 
     def dependencies_of(self, service: str) -> list[str]:
         return DEPENDENCY_GRAPH.get(service, [])
+
+    def get_dependencies(self, service: str) -> dict[str, list[dict]]:
+        upstream_names = DEPENDENCY_GRAPH.get(service, [])
+        upstream = []
+        for name in upstream_names:
+            st = self.get_service_state(name)
+            upstream.append({
+                "name": name,
+                "healthy": st.healthy,
+                "latency_ms": st.latency_ms,
+                "error_rate": st.error_rate,
+                "active_failures": [f.kind for f in st.active_failures],
+            })
+
+        downstream_names = [s for s, deps in DEPENDENCY_GRAPH.items() if service in deps]
+        downstream = []
+        for name in downstream_names:
+            st = self.get_service_state(name)
+            downstream.append({
+                "name": name,
+                "healthy": st.healthy,
+                "latency_ms": st.latency_ms,
+                "error_rate": st.error_rate,
+                "active_failures": [f.kind for f in st.active_failures],
+            })
+
+        return {
+            "upstream": upstream,
+            "downstream": downstream,
+        }
+
+    def get_service_detail(self, service: str) -> dict:
+        state = self.get_service_state(service)
+        if not state.history:
+            state.init_history()
+        return {
+            "name": service,
+            "healthy": state.healthy,
+            "latency_ms": state.latency_ms,
+            "error_rate": state.error_rate,
+            "throughput_rps": state.throughput_rps,
+            "cpu_percent": state.cpu_percent,
+            "memory_percent": state.memory_percent,
+            "db_connections_used": state.db_connections_used,
+            "db_connections_max": state.db_connections_max,
+            "queue_depth": state.queue_depth,
+            "active_failures": [
+                {
+                    "kind": f.kind,
+                    "severity": f.severity,
+                    "injected_at": f.injected_at,
+                    "note": f.note,
+                }
+                for f in state.active_failures
+            ],
+            "history": state.history,
+            "dependencies": self.get_dependencies(service),
+            "logs": state.synthesize_logs(limit=30),
+            "events": [
+                {
+                    "service": e.service,
+                    "event_type": e.event_type,
+                    "description": e.description,
+                    "timestamp": e.timestamp,
+                }
+                for e in state.events
+            ],
+        }
 
     def snapshot(self) -> dict:
         return {

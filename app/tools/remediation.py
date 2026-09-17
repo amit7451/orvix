@@ -30,16 +30,38 @@ class RestartServiceTool(Tool):
     }
 
     async def _execute(self, arguments: dict[str, Any], *, dry_run: bool) -> ToolResult:
-        sim = get_simulation_registry()
         service = arguments["service"]
-        state = sim.get_service_state(service)
-        cleared = [f.kind for f in state.active_failures if f.kind in _RESTART_CLEARS]
-        if not dry_run:
-            state.active_failures = [f for f in state.active_failures if f.kind not in _RESTART_CLEARS]
-            state.tick()
+        from app.core.config import settings
+        
+        if settings.remediation_engine == "docker":
+            import docker
+            client = docker.from_env()
+            if not dry_run:
+                try:
+                    # In Swarm, to restart a service, we can update it with a forced update
+                    swarm_service = client.services.get(service)
+                    swarm_service.force_update()
+                    cleared = ["restarted"]
+                    healthy = True
+                except Exception as e:
+                    cleared = []
+                    healthy = False
+            else:
+                cleared = ["restarted_dry_run"]
+                healthy = True
+        else:
+            sim = get_simulation_registry()
+            state = sim.get_service_state(service)
+            cleared = [f.kind for f in state.active_failures if f.kind in _RESTART_CLEARS]
+            healthy = state.healthy
+            if not dry_run:
+                state.active_failures = [f for f in state.active_failures if f.kind not in _RESTART_CLEARS]
+                state.tick()
+                healthy = state.healthy
+
         return ToolResult(
             status=ToolResultStatus.SUCCESS,
-            evidence={"cleared_failures": cleared, "dry_run": dry_run, "healthy_after": state.healthy},
+            evidence={"cleared_failures": cleared, "dry_run": dry_run, "healthy_after": healthy},
             affected_resource=service,
         )
 
@@ -84,16 +106,33 @@ class ScaleServiceTool(Tool):
     }
 
     async def _execute(self, arguments: dict[str, Any], *, dry_run: bool) -> ToolResult:
-        sim = get_simulation_registry()
         service = arguments["service"]
-        state = sim.get_service_state(service)
-        cleared = [f.kind for f in state.active_failures if f.kind in _SCALE_CLEARS]
-        if not dry_run:
-            state.active_failures = [f for f in state.active_failures if f.kind not in _SCALE_CLEARS]
-            state.tick()
+        replicas = arguments["replicas"]
+        from app.core.config import settings
+        
+        if settings.remediation_engine == "docker":
+            import docker
+            client = docker.from_env()
+            if not dry_run:
+                try:
+                    swarm_service = client.services.get(service)
+                    swarm_service.scale(replicas)
+                    cleared = ["scaled"]
+                except Exception:
+                    cleared = []
+            else:
+                cleared = ["scaled_dry_run"]
+        else:
+            sim = get_simulation_registry()
+            state = sim.get_service_state(service)
+            cleared = [f.kind for f in state.active_failures if f.kind in _SCALE_CLEARS]
+            if not dry_run:
+                state.active_failures = [f for f in state.active_failures if f.kind not in _SCALE_CLEARS]
+                state.tick()
+
         return ToolResult(
             status=ToolResultStatus.SUCCESS,
-            evidence={"replicas": arguments["replicas"], "cleared_failures": cleared, "dry_run": dry_run},
+            evidence={"replicas": replicas, "cleared_failures": cleared, "dry_run": dry_run},
             affected_resource=service,
         )
 

@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
+import { EventStreamProvider } from './context/EventStreamContext';
 import { Dashboard } from './pages/Dashboard';
 import { ServicesPage } from './pages/ServicesPage';
+import { ServiceDetailPage } from './pages/ServiceDetailPage';
 import { IncidentsPage } from './pages/IncidentsPage';
 import { IncidentDetailPage } from './pages/IncidentDetailPage';
 import { SimulationPage } from './pages/SimulationPage';
@@ -14,11 +16,13 @@ import { NotificationsPage } from './pages/NotificationsPage';
 function App() {
   return (
     <ToastProvider>
-      <Router>
-        <Layout>
+      <EventStreamProvider>
+        <Router>
+          <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/:name" element={<ServiceDetailPage />} />
             <Route path="/incidents" element={<IncidentsPage />} />
             <Route path="/incidents/:id" element={<IncidentDetailPage />} />
             <Route path="/simulation" element={<SimulationPage />} />
@@ -30,8 +34,9 @@ function App() {
           </Routes>
         </Layout>
       </Router>
-    </ToastProvider>
-  );
+    </EventStreamProvider>
+  </ToastProvider>
+);
 }
 
 export default App;

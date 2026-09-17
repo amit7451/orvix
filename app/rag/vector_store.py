@@ -95,3 +95,104 @@ class InMemoryVectorStore(VectorStore):
             )
             for s, r in top
         ]
+
+
+class QdrantVectorStore(VectorStore):
+    def __init__(self, url: str, collection_name: str = "orvix_knowledge") -> None:
+        from qdrant_client import QdrantClient
+        from qdrant_client.http import models
+
+        self.client = QdrantClient(url=url)
+        self.collection_name = collection_name
+        self._ensure_collection()
+
+    def _ensure_collection(self):
+        from app.core.config import settings
+        from qdrant_client.http import models
+        try:
+            self.client.get_collection(self.collection_name)
+        except Exception:
+            self.client.create_collection(
+                collection_name=self.collection_name,
+                vectors_config=models.VectorParams(
+                    size=settings.embedding_dim,
+                    distance=models.Distance.COSINE
+                )
+            )
+
+    async def upsert(self, records: list[VectorRecord]) -> None:
+        from qdrant_client.http import models
+        points = [
+            models.PointStruct(
+                id=r.chunk_id,
+                vector=r.embedding,
+                payload={"document_id": r.document_id, "text": r.text, **r.metadata}
+            )
+            for r in records
+        ]
+        self.client.upsert(
+            collection_name=self.collection_name,
+            points=points
+        )
+
+    async def delete_document(self, document_id: str) -> None:
+        from qdrant_client.http import models
+        self.client.delete(
+            collection_name=self.collection_name,
+            points_selector=models.Filter(
+                must=[
+                    models.FieldCondition(
+                        key="document_id",
+                        match=models.MatchValue(value=document_id)
+                    )
+                ]
+            )
+        )
+
+    async def search(
+        self, query_embedding: list[float], top_k: int = 5, metadata_filter: dict | None = None
+    ) -> list[VectorSearchResult]:
+        from qdrant_client.http import models
+
+        query_filter = None
+        if metadata_filter:
+            conditions = [
+                models.FieldCondition(key=k, match=models.MatchValue(value=v))
+                for k, v in metadata_filter.items() if v is not None
+            ]
+            if conditions:
+                query_filter = models.Filter(must=conditions)
+
+        if hasattr(self.client, "query_points"):
+            response = self.client.query_points(
+                collection_name=self.collection_name,
+                query=query_embedding,
+                query_filter=query_filter,
+                limit=top_k,
+            )
+            results = response.points
+        elif hasattr(self.client, "search_points"):
+            results = self.client.search_points(
+                collection_name=self.collection_name,
+                query_vector=query_embedding,
+                query_filter=query_filter,
+                limit=top_k,
+            )
+        else:
+            results = self.client.search(
+                collection_name=self.collection_name,
+                query_vector=query_embedding,
+                query_filter=query_filter,
+                limit=top_k,
+            )
+
+        return [
+            VectorSearchResult(
+                chunk_id=str(res.id),
+                document_id=res.payload.get("document_id", ""),
+                text=res.payload.get("text", ""),
+                score=res.score,
+                metadata={k: v for k, v in res.payload.items() if k not in ("document_id", "text")}
+            )
+            for res in results
+        ]

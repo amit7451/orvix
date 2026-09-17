@@ -48,12 +48,17 @@ class IncidentService:
     async def get(self, db: AsyncSession, incident_id: str) -> Incident | None:
         return await db.get(Incident, incident_id)
 
-    async def list(self, db: AsyncSession, status: IncidentStatus | None = None, limit: int = 100) -> list[Incident]:
-        stmt = select(Incident).order_by(Incident.created_at.desc()).limit(limit)
+    async def list(
+        self, db: AsyncSession, status: IncidentStatus | None = None, service: str | None = None, limit: int = 100
+    ) -> list[Incident]:
+        stmt = select(Incident).order_by(Incident.created_at.desc())
         if status:
             stmt = stmt.where(Incident.status == status)
         result = await db.execute(stmt)
-        return list(result.scalars().all())
+        incidents = list(result.scalars().all())
+        if service:
+            incidents = [inc for inc in incidents if service in (inc.affected_services or [])]
+        return incidents[:limit]
 
     async def add_event(self, db: AsyncSession, incident: Incident, stage: str, message: str, data: dict | None = None) -> IncidentEvent:
         event = IncidentEvent(incident_id=incident.id, stage=stage, message=message, data=data or {})

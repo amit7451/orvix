@@ -2,6 +2,8 @@
 services/dependencies, symptoms, severity, impact, duplicate detection."""
 from __future__ import annotations
 
+import asyncio
+
 from app.core.enums import IncidentStatus, Severity
 from app.db.session import SessionLocal
 from app.incidents.service import incident_service
@@ -58,8 +60,12 @@ async def understand(state: dict) -> dict:
             if incident.status == IncidentStatus.DETECTED:
                 await incident_service.transition(db, incident, IncidentStatus.INVESTIGATING, actor="orvix-agent",
                                                     note="Evidence normalized; investigation started.")
-            await incident_service.add_event(db, incident, "UNDERSTAND",
-                                              f"Normalized incident: severity={severity}, symptoms={len(symptoms)}.")
+            await incident_service.add_event(
+                db, incident, "UNDERSTAND",
+                "I have analyzed the telemetry and identified the key symptoms and anomaly scores. I will now search the knowledge base for similar historical issues.",
+                data={"symptoms": symptoms, "severity": severity, "unhealthy_dependencies": unhealthy_dependencies}
+            )
             await db.commit()
 
+    await asyncio.sleep(1.5)
     return state

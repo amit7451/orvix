@@ -16,11 +16,20 @@ router = APIRouter(tags=["realtime"])
 async def events_websocket(websocket: WebSocket) -> None:
     await websocket.accept()
     queue = event_bus.subscribe()
+    sent_ids: set[str] = set()
     try:
-        for event in event_bus.recent(20):
-            await websocket.send_text(event.to_json())
+        for event in event_bus.recent(30):
+            if event.id not in sent_ids:
+                sent_ids.add(event.id)
+                await websocket.send_text(event.to_json())
         while True:
             event = await queue.get()
+            if event.id in sent_ids:
+                continue
+            sent_ids.add(event.id)
+            if len(sent_ids) > 1000:
+                # Retain only the most recent IDs to bound memory
+                sent_ids = set(list(sent_ids)[-500:])
             await websocket.send_text(event.to_json())
     except WebSocketDisconnect:
         pass
@@ -34,11 +43,19 @@ async def events_sse():
     queue = event_bus.subscribe()
 
     async def generator():
+        sent_ids: set[str] = set()
         try:
-            for event in event_bus.recent(20):
-                yield f"data: {event.to_json()}\n\n"
+            for event in event_bus.recent(30):
+                if event.id not in sent_ids:
+                    sent_ids.add(event.id)
+                    yield f"data: {event.to_json()}\n\n"
             while True:
                 event = await queue.get()
+                if event.id in sent_ids:
+                    continue
+                sent_ids.add(event.id)
+                if len(sent_ids) > 1000:
+                    sent_ids = set(list(sent_ids)[-500:])
                 yield f"data: {event.to_json()}\n\n"
         except asyncio.CancelledError:
             pass

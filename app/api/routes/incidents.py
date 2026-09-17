@@ -15,8 +15,12 @@ router = APIRouter(prefix="/api/incidents", tags=["incidents"])
 
 
 @router.get("", response_model=list[IncidentOut])
-async def list_incidents(status: IncidentStatus | None = None, db: AsyncSession = Depends(get_db)):
-    return await incident_service.list(db, status=status)
+async def list_incidents(
+    status: IncidentStatus | None = None,
+    service: str | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    return await incident_service.list(db, status=status, service=service)
 
 
 @router.get("/{incident_id}", response_model=IncidentOut)
