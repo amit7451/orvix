@@ -46,6 +46,13 @@ class MonitoringWatcher:
         for service_name, anomalies in triggered.items():
             top = max(anomalies, key=lambda a: a.anomaly_score)
             async with SessionLocal() as db:
+                from app.incidents.correlation import build_correlation_key, find_open_duplicate
+                correlation_key = build_correlation_key([service_name], [a.explanation for a in anomalies])
+                duplicate = await find_open_duplicate(db, correlation_key)
+                if duplicate:
+                    # Skip creating new incident if one is already open for this issue
+                    continue
+
                 incident = await incident_service.create(
                     db,
                     IncidentCreate(
@@ -57,13 +64,10 @@ class MonitoringWatcher:
                     ),
                     actor="orvix-watcher",
                 )
-                # Skip kicking off a fresh agent run for a detected duplicate -
-                # the original incident's run is already handling it.
-                if incident.duplicate_of is None:
-                    try:
-                        await start_run(db, incident)
-                    except Exception:  # noqa: BLE001
-                        logger.exception("Agent run failed to start for incident %s", incident.id)
+                try:
+                    await start_run(db, incident)
+                except Exception:  # noqa: BLE001
+                    logger.exception("Agent run failed to start for incident %s", incident.id)
 
     async def _loop(self) -> None:
         self._running = True
