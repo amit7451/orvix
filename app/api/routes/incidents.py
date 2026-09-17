@@ -35,6 +35,12 @@ async def get_incident_timeline(incident_id: str, db: AsyncSession = Depends(get
     return list(result.scalars().all())
 
 
+@router.get("/{incident_id}/events", response_model=list[IncidentEventOut])
+async def get_incident_events_alias(incident_id: str, db: AsyncSession = Depends(get_db)):
+    """Alias for /timeline for backward compatibility."""
+    return await get_incident_timeline(incident_id, db)
+
+
 @router.post("", response_model=IncidentOut, status_code=201)
 async def create_incident(payload: IncidentCreate, db: AsyncSession = Depends(get_db)):
     return await incident_service.create(db, payload, actor="api-user")

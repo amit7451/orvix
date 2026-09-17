@@ -1,28 +1,36 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { UserDashboard } from './pages/UserDashboard';
-import { AdminDashboard } from './pages/AdminDashboard';
-import { AnalyticsPage } from './pages/admin/AnalyticsPage';
-import { KnowledgePage } from './pages/admin/KnowledgePage';
-import { ToolsPage } from './pages/admin/ToolsPage';
-import { NotificationsPage } from './pages/admin/NotificationsPage';
+import { ToastProvider } from './components/Toast';
+import { Dashboard } from './pages/Dashboard';
+import { ServicesPage } from './pages/ServicesPage';
+import { IncidentsPage } from './pages/IncidentsPage';
+import { IncidentDetailPage } from './pages/IncidentDetailPage';
+import { SimulationPage } from './pages/SimulationPage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
+import { KnowledgePage } from './pages/KnowledgePage';
+import { ToolsPage } from './pages/ToolsPage';
+import { NotificationsPage } from './pages/NotificationsPage';
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<UserDashboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/analytics" element={<AnalyticsPage />} />
-          <Route path="/admin/knowledge" element={<KnowledgePage />} />
-          <Route path="/admin/tools" element={<ToolsPage />} />
-          <Route path="/admin/notifications" element={<NotificationsPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <ToastProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/incidents" element={<IncidentsPage />} />
+            <Route path="/incidents/:id" element={<IncidentDetailPage />} />
+            <Route path="/simulation" element={<SimulationPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/knowledge" element={<KnowledgePage />} />
+            <Route path="/tools" element={<ToolsPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ToastProvider>
   );
 }
 
