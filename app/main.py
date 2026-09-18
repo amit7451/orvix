@@ -21,6 +21,7 @@ from app.api.routes import (
     realtime,
     services,
     simulation,
+    testing,
     tools,
 )
 from app.core.config import settings
@@ -74,6 +75,7 @@ for router in (
     analytics.router,
     simulation.router,
     realtime.router,
+    testing.router,
 ):
     app.include_router(router)
 

@@ -30,10 +30,14 @@ class MockLogsProvider(LogsProvider):
 
 
 class LokiLogsProvider(LogsProvider):
-    def __init__(self, loki_url: str) -> None:
+    def __init__(self, loki_url: str, fallback_sim=None) -> None:
         self.loki_url = loki_url
+        self._fallback = MockLogsProvider(fallback_sim) if fallback_sim else None
 
     async def get_recent_logs(self, service: str, limit: int = 50) -> list[LogEntry]:
+        if self._fallback and service in self._fallback._sim.services:
+            return await self._fallback.get_recent_logs(service, limit=limit)
+
         import httpx
         from datetime import datetime, timezone
         import json
@@ -51,6 +55,8 @@ class LokiLogsProvider(LogsProvider):
                 data = response.json()
         except Exception:
             # Fallback for when Loki isn't reachable or fails
+            if self._fallback:
+                return await self._fallback.get_recent_logs(service, limit=limit)
             return []
 
         entries = []

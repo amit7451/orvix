@@ -44,7 +44,12 @@ export const SimulationPage: React.FC = () => {
         body: JSON.stringify({ service: selectedService, kind: failureType, severity }),
       });
       if (res.ok) {
-        addToast('warning', `Injected ${failureType} failure on ${selectedService} (severity: ${severity})`);
+        const data = await res.json();
+        if (data.incident_id) {
+          addToast('warning', `⚡ Injected ${failureType} on ${selectedService} — Incident #${data.incident_id.slice(0, 8)} created!`);
+        } else {
+          addToast('warning', `Injected ${failureType} failure on ${selectedService} (severity: ${severity})`);
+        }
       } else {
         addToast('error', 'Failed to inject failure');
       }

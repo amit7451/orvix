@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   ShieldCheck, LayoutDashboard, Server, AlertTriangle, Zap, BarChart3,
-  Database, Wrench, Bell, Wifi, WifiOff
+  Database, Wrench, Bell, Wifi, WifiOff, FlaskConical
 } from 'lucide-react';
 import { API_BASE } from '../types';
 import { useEventStream } from '../context/EventStreamContext';
@@ -16,6 +16,7 @@ const navItems = [
   { path: '/services', label: 'Services', icon: Server, section: 'overview' },
   { path: '/incidents', label: 'Incidents', icon: AlertTriangle, section: 'overview' },
   { path: '/simulation', label: 'Simulation', icon: Zap, section: 'operations' },
+  { path: '/testing', label: 'Testing', icon: FlaskConical, section: 'operations' },
   { path: '/analytics', label: 'Analytics', icon: BarChart3, section: 'intelligence' },
   { path: '/knowledge', label: 'Knowledge Base', icon: Database, section: 'intelligence' },
   { path: '/tools', label: 'Tool Registry', icon: Wrench, section: 'intelligence' },

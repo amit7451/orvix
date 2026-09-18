@@ -1,0 +1,1537 @@
+{
+  "status": "completed",
+  "dataset": "openstack_logs.csv",
+  "total_time_seconds": 59.313,
+  "dataset_summary": {
+    "total_log_entries": 2000,
+    "level_distribution": {
+      "INFO": 1969,
+      "WARNING": 31
+    },
+    "unique_event_templates": 43,
+    "time_range": {
+      "start": "2017-05-16T00:00:00.008000",
+      "end": "2017-05-16T00:14:47.687000"
+    },
+    "scenarios_detected": 9
+  },
+  "scenarios": [
+    {
+      "scenario_id": "error-burst-2017-05-16 00:01",
+      "title": "Error burst detected (3 errors in 1-minute window)",
+      "description": "A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:01, indicating potential system instability.",
+      "severity": "MEDIUM",
+      "affected_components": [
+        "nova.virt.libvirt.imagecache"
+      ],
+      "symptoms": [
+        "3 errors in 1-minute window",
+        "Affected components: nova.virt.libvirt.imagecache"
+      ],
+      "evidence": {
+        "error_count": 3,
+        "time_window": "2017-05-16 00:01",
+        "sample_messages": [
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742"
+        ]
+      },
+      "log_entries": [
+        {
+          "line_id": 147,
+          "timestamp": "2017-05-16T00:01:01.698000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 238,
+          "timestamp": "2017-05-16T00:01:45.116000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 241,
+          "timestamp": "2017-05-16T00:01:50.149000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        }
+      ],
+      "anomaly_count": 3,
+      "time_window": "2017-05-16 00:01"
+    },
+    {
+      "scenario_id": "error-burst-2017-05-16 00:05",
+      "title": "Error burst detected (3 errors in 1-minute window)",
+      "description": "A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:05, indicating potential system instability.",
+      "severity": "MEDIUM",
+      "affected_components": [
+        "nova.virt.libvirt.imagecache"
+      ],
+      "symptoms": [
+        "3 errors in 1-minute window",
+        "Affected components: nova.virt.libvirt.imagecache"
+      ],
+      "evidence": {
+        "error_count": 3,
+        "time_window": "2017-05-16 00:05",
+        "sample_messages": [
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742"
+        ]
+      },
+      "log_entries": [
+        {
+          "line_id": 694,
+          "timestamp": "2017-05-16T00:05:10.337000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 783,
+          "timestamp": "2017-05-16T00:05:50.114000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 789,
+          "timestamp": "2017-05-16T00:05:55.145000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        }
+      ],
+      "anomaly_count": 3,
+      "time_window": "2017-05-16 00:05"
+    },
+    {
+      "scenario_id": "error-burst-2017-05-16 00:09",
+      "title": "Error burst detected (3 errors in 1-minute window)",
+      "description": "A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:09, indicating potential system instability.",
+      "severity": "MEDIUM",
+      "affected_components": [
+        "nova.virt.libvirt.imagecache",
+        "nova.compute.manager"
+      ],
+      "symptoms": [
+        "3 errors in 1-minute window",
+        "Affected components: nova.virt.libvirt.imagecache, nova.compute.manager"
+      ],
+      "evidence": {
+        "error_count": 3,
+        "time_window": "2017-05-16 00:09",
+        "sample_messages": [
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "While synchronizing instance power states, found 1 instances in the database and 0 instances on the hypervisor."
+        ]
+      },
+      "log_entries": [
+        {
+          "line_id": 1259,
+          "timestamp": "2017-05-16T00:09:20.112000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 1262,
+          "timestamp": "2017-05-16T00:09:25.180000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 1297,
+          "timestamp": "2017-05-16T00:09:41.850000",
+          "level": "WARNING",
+          "component": "nova.compute.manager",
+          "content": "While synchronizing instance power states, found 1 instances in the database and 0 instances on the hypervisor.",
+          "event_id": "E43"
+        }
+      ],
+      "anomaly_count": 3,
+      "time_window": "2017-05-16 00:09"
+    },
+    {
+      "scenario_id": "error-burst-2017-05-16 00:12",
+      "title": "Error burst detected (3 errors in 1-minute window)",
+      "description": "A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:12, indicating potential system instability.",
+      "severity": "MEDIUM",
+      "affected_components": [
+        "nova.virt.libvirt.imagecache"
+      ],
+      "symptoms": [
+        "3 errors in 1-minute window",
+        "Affected components: nova.virt.libvirt.imagecache"
+      ],
+      "evidence": {
+        "error_count": 3,
+        "time_window": "2017-05-16 00:12",
+        "sample_messages": [
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742"
+        ]
+      },
+      "log_entries": [
+        {
+          "line_id": 1634,
+          "timestamp": "2017-05-16T00:12:05.112000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 1639,
+          "timestamp": "2017-05-16T00:12:10.117000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        },
+        {
+          "line_id": 1726,
+          "timestamp": "2017-05-16T00:12:45.352000",
+          "level": "WARNING",
+          "component": "nova.virt.libvirt.imagecache",
+          "content": "Unknown base file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+          "event_id": "E42"
+        }
+      ],
+      "anomaly_count": 3,
+      "time_window": "2017-05-16 00:12"
+    },
+    {
+      "scenario_id": "slow-api-responses",
+      "title": "API latency anomaly (27 slow responses detected)",
+      "description": "27 API responses exceeded the baseline latency threshold of 0.436s (mean=0.234s, stdev=0.101s). This may indicate backend congestion or resource exhaustion.",
+      "severity": "HIGH",
+      "affected_components": [
+        "nova.osapi_compute.wsgi.server",
+        "nova.metadata.wsgi.server"
+      ],
+      "symptoms": [
+        "27 responses above 0.436s threshold",
+        "Mean response time: 0.234s",
+        "Max response time: 0.712s",
+        "41 HTTP error responses (4xx/5xx)"
+      ],
+      "evidence": {
+        "slow_response_count": 27,
+        "mean_response_time": 0.2345,
+        "stdev_response_time": 0.1009,
+        "threshold": 0.4363,
+        "max_response_time": 0.7117,
+        "error_response_count": 41,
+        "sample_slow": [
+          {
+            "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.6686139",
+            "time": 0.6686139
+          },
+          {
+            "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5442920",
+            "time": 0.544292
+          },
+          {
+            "content": "10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.4467819",
+            "time": 0.4467819
+          },
+          {
+            "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.4586949",
+            "time": 0.4586949
+          },
+          {
+            "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5169401",
+            "time": 0.5169401
+          }
+        ]
+      },
+      "log_entries": [
+        {
+          "line_id": 62,
+          "timestamp": "2017-05-16T00:00:30.788000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.6686139",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 153,
+          "timestamp": "2017-05-16T00:01:12.693000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5442920",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 202,
+          "timestamp": "2017-05-16T00:01:31.811000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.4467819",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 244,
+          "timestamp": "2017-05-16T00:01:52.949000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.4586949",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 335,
+          "timestamp": "2017-05-16T00:02:34.773000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5169401",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 432,
+          "timestamp": "2017-05-16T00:03:16.800000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.7116742",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 514,
+          "timestamp": "2017-05-16T00:03:57.214000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5000288",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 607,
+          "timestamp": "2017-05-16T00:04:38.992000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.4953768",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 707,
+          "timestamp": "2017-05-16T00:05:20.936000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5533919",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 792,
+          "timestamp": "2017-05-16T00:06:01.300000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers HTTP/1.1\" status: 202 len: 733 time: 0.5126011",
+          "event_id": "E26"
+        }
+      ],
+      "anomaly_count": 27,
+      "time_window": ""
+    },
+    {
+      "scenario_id": "http-error-responses",
+      "title": "HTTP error responses detected (41 errors)",
+      "description": "Detected 41 HTTP error responses (status >= 400). Status distribution: {404: 41}",
+      "severity": "MEDIUM",
+      "affected_components": [
+        "nova.osapi_compute.wsgi.server",
+        "nova.metadata.wsgi.server"
+      ],
+      "symptoms": [
+        "41x HTTP 404"
+      ],
+      "evidence": {
+        "error_count": 41,
+        "status_distribution": {
+          "404": 41
+        },
+        "sample_errors": [
+          {
+            "content": "10.11.21.122,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.0010660",
+            "status": 404
+          },
+          {
+            "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.0793190",
+            "status": 404
+          },
+          {
+            "content": "10.11.21.123,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.2285759",
+            "status": 404
+          },
+          {
+            "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.0886950",
+            "status": 404
+          },
+          {
+            "content": "10.11.21.124,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.0010281",
+            "status": 404
+          }
+        ]
+      },
+      "log_entries": [
+        {
+          "line_id": 46,
+          "timestamp": "2017-05-16T00:00:17.531000",
+          "level": "INFO",
+          "component": "nova.metadata.wsgi.server",
+          "content": "10.11.21.122,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.0010660",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 61,
+          "timestamp": "2017-05-16T00:00:21.069000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.0793190",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 129,
+          "timestamp": "2017-05-16T00:00:58.766000",
+          "level": "INFO",
+          "component": "nova.metadata.wsgi.server",
+          "content": "10.11.21.123,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.2285759",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 152,
+          "timestamp": "2017-05-16T00:01:03.116000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.0886950",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 221,
+          "timestamp": "2017-05-16T00:01:39.847000",
+          "level": "INFO",
+          "component": "nova.metadata.wsgi.server",
+          "content": "10.11.21.124,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.0010281",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 237,
+          "timestamp": "2017-05-16T00:01:43.497000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.1146111",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 331,
+          "timestamp": "2017-05-16T00:02:25.214000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.1029620",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 402,
+          "timestamp": "2017-05-16T00:03:02.276000",
+          "level": "INFO",
+          "component": "nova.metadata.wsgi.server",
+          "content": "10.11.21.126,10.11.10.1 \"GET /openstack/2013-10-17/user_data HTTP/1.1\" status: 404 len: 176 time: 0.0010130",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 424,
+          "timestamp": "2017-05-16T00:03:07.022000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.0833371",
+          "event_id": "E26"
+        },
+        {
+          "line_id": 510,
+          "timestamp": "2017-05-16T00:03:47.602000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"POST /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events HTTP/1.1\" status: 404 len: 296 time: 0.0918391",
+          "event_id": "E26"
+        }
+      ],
+      "anomaly_count": 41,
+      "time_window": ""
+    },
+    {
+      "scenario_id": "resource-high-utilization",
+      "title": "High resource utilization detected (9 entries)",
+      "description": "Resource tracking data shows 9 entries with utilization above 80% for one or more resources (vCPU, RAM, disk).",
+      "severity": "HIGH",
+      "affected_components": [
+        "nova.compute.resource_tracker"
+      ],
+      "symptoms": [
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB",
+        "Disk: 20GB/15GB"
+      ],
+      "evidence": {
+        "high_utilization_count": 9,
+        "samples": [
+          {
+            "issues": [
+              "Disk: 20GB/15GB"
+            ],
+            "ram_total_mb": 64172,
+            "ram_used_mb": 2560,
+            "ram_utilization": 0.04,
+            "disk_total_gb": 15,
+            "disk_used_gb": 20,
+            "disk_utilization": 1.333
+          },
+          {
+            "issues": [
+              "Disk: 20GB/15GB"
+            ],
+            "ram_total_mb": 64172,
+            "ram_used_mb": 2560,
+            "ram_utilization": 0.04,
+            "disk_total_gb": 15,
+            "disk_used_gb": 20,
+            "disk_utilization": 1.333
+          },
+          {
+            "issues": [
+              "Disk: 20GB/15GB"
+            ],
+            "ram_total_mb": 64172,
+            "ram_used_mb": 2560,
+            "ram_utilization": 0.04,
+            "disk_total_gb": 15,
+            "disk_used_gb": 20,
+            "disk_utilization": 1.333
+          },
+          {
+            "issues": [
+              "Disk: 20GB/15GB"
+            ],
+            "ram_total_mb": 64172,
+            "ram_used_mb": 2560,
+            "ram_utilization": 0.04,
+            "disk_total_gb": 15,
+            "disk_used_gb": 20,
+            "disk_utilization": 1.333
+          },
+          {
+            "issues": [
+              "Disk: 20GB/15GB"
+            ],
+            "ram_total_mb": 64172,
+            "ram_used_mb": 2560,
+            "ram_utilization": 0.04,
+            "disk_total_gb": 15,
+            "disk_used_gb": 20,
+            "disk_utilization": 1.333
+          }
+        ]
+      },
+      "log_entries": [],
+      "anomaly_count": 9,
+      "time_window": ""
+    },
+    {
+      "scenario_id": "disk-overcommit",
+      "title": "Disk over-commitment detected",
+      "description": "Disk used exceeds physical disk capacity, indicating thin provisioning overcommit that could lead to I/O failures.",
+      "severity": "CRITICAL",
+      "affected_components": [
+        "nova.compute.resource_tracker"
+      ],
+      "symptoms": [
+        "Disk used exceeds physical capacity"
+      ],
+      "evidence": {
+        "overcommit_entries": 9
+      },
+      "log_entries": [],
+      "anomaly_count": 9,
+      "time_window": ""
+    },
+    {
+      "scenario_id": "event-flood-E25",
+      "title": "Log event concentration: E25 accounts for 47% of all logs",
+      "description": "Event template 'E25' (<*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>) comprises 47% (931/2000) of all log entries. This concentration may indicate a repetitive operation, retry loop, or log storm.",
+      "severity": "MEDIUM",
+      "affected_components": [
+        "nova.osapi_compute.wsgi.server"
+      ],
+      "symptoms": [
+        "E25 represents 47% of all log events",
+        "Template: <*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>"
+      ],
+      "evidence": {
+        "event_id": "E25",
+        "count": 931,
+        "total_events": 2000,
+        "ratio": 0.4655,
+        "template": "<*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>"
+      },
+      "log_entries": [
+        {
+          "line_id": 1,
+          "timestamp": "2017-05-16T00:00:00.008000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.2477829",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 2,
+          "timestamp": "2017-05-16T00:00:00.272000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.2577181",
+          "event_id": "E25"
+        },
+        {
+          "line_id": 3,
+          "timestamp": "2017-05-16T00:00:01.551000",
+          "level": "INFO",
+          "component": "nova.osapi_compute.wsgi.server",
+          "content": "10.11.10.1 \"GET /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail HTTP/1.1\" status: 200 len: 1893 time: 0.2731631",
+          "event_id": "E25"
+        }
+      ],
+      "anomaly_count": 1,
+      "time_window": ""
+    }
+  ],
+  "model_results": [
+    {
+      "label": "OpenAI GPT-4o Mini",
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "total_time_seconds": 5.172,
+      "avg_time_per_scenario": 0.575,
+      "total_tokens": {
+        "prompt": 6172,
+        "completion": 1843,
+        "total": 8015
+      },
+      "scenarios_analyzed": 9,
+      "successful_analyses": 9,
+      "failed_analyses": 0,
+      "avg_confidence": 0.9078,
+      "anomalies_detected": 9,
+      "problems_solved": 9,
+      "results": [
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "error-burst-2017-05-16 00:01",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:01, indicating potential system instability.",
+          "confidence": 0.94,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache"
+          ],
+          "time_seconds": 1.844,
+          "tokens": {
+            "prompt": 641,
+            "completion": 222,
+            "total": 863
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "error-burst-2017-05-16 00:05",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:05, indicating potential system instability.",
+          "confidence": 0.89,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache"
+          ],
+          "time_seconds": 2.032,
+          "tokens": {
+            "prompt": 641,
+            "completion": 179,
+            "total": 820
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "error-burst-2017-05-16 00:09",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache, nova.compute.manager. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:09, indicating potential system instability.",
+          "confidence": 0.88,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache, nova.compute.manager"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache",
+            "Cascading latency from dependent service nova.compute.manager"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache",
+            "nova.compute.manager"
+          ],
+          "time_seconds": 2.032,
+          "tokens": {
+            "prompt": 663,
+            "completion": 173,
+            "total": 836
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "error-burst-2017-05-16 00:12",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:12, indicating potential system instability.",
+          "confidence": 0.9,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache"
+          ],
+          "time_seconds": 1.891,
+          "tokens": {
+            "prompt": 642,
+            "completion": 213,
+            "total": 855
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "slow-api-responses",
+          "diagnosis": "Detected api latency anomaly (27 slow responses detected) impacting nova.osapi_compute.wsgi.server, nova.metadata.wsgi.server. Underlying cause: 27 API responses exceeded the baseline latency threshold of 0.436s (mean=0.234s, stdev=0.101s). This may indicate backend congestion or resource exhaustion.",
+          "confidence": 0.91,
+          "supporting_evidence": [
+            "27 responses above 0.436s threshold",
+            "Mean response time: 0.234s",
+            "Max response time: 0.712s",
+            "41 HTTP error responses (4xx/5xx)"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.osapi_compute.wsgi.server",
+            "Cascading latency from dependent service nova.metadata.wsgi.server"
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server",
+            "nova.metadata.wsgi.server"
+          ],
+          "time_seconds": 1.516,
+          "tokens": {
+            "prompt": 1016,
+            "completion": 222,
+            "total": 1238
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "http-error-responses",
+          "diagnosis": "Detected http error responses detected (41 errors) impacting nova.osapi_compute.wsgi.server, nova.metadata.wsgi.server. Underlying cause: Detected 41 HTTP error responses (status >= 400). Status distribution: {404: 41}",
+          "confidence": 0.89,
+          "supporting_evidence": [
+            "41x HTTP 404"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.osapi_compute.wsgi.server",
+            "Cascading latency from dependent service nova.metadata.wsgi.server"
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server",
+            "nova.metadata.wsgi.server"
+          ],
+          "time_seconds": 1.688,
+          "tokens": {
+            "prompt": 958,
+            "completion": 194,
+            "total": 1152
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "resource-high-utilization",
+          "diagnosis": "Detected high resource utilization detected (9 entries) impacting nova.compute.resource_tracker. Underlying cause: Resource tracking data shows 9 entries with utilization above 80% for one or more resources (vCPU, RAM, disk).",
+          "confidence": 0.92,
+          "supporting_evidence": [
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.compute.resource_tracker"
+          ],
+          "affected_services": [
+            "nova.compute.resource_tracker"
+          ],
+          "time_seconds": 1.562,
+          "tokens": {
+            "prompt": 689,
+            "completion": 219,
+            "total": 908
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "disk-overcommit",
+          "diagnosis": "Detected disk over-commitment detected impacting nova.compute.resource_tracker. Underlying cause: Disk used exceeds physical disk capacity, indicating thin provisioning overcommit that could lead to I/O failures.",
+          "confidence": 0.93,
+          "supporting_evidence": [
+            "Disk used exceeds physical capacity"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.compute.resource_tracker"
+          ],
+          "affected_services": [
+            "nova.compute.resource_tracker"
+          ],
+          "time_seconds": 1.39,
+          "tokens": {
+            "prompt": 313,
+            "completion": 197,
+            "total": 510
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "OpenAI GPT-4o Mini",
+          "scenario_id": "event-flood-E25",
+          "diagnosis": "Detected log event concentration: e25 accounts for 47% of all logs impacting nova.osapi_compute.wsgi.server. Underlying cause: Event template 'E25' (<*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>) comprises 47% (931/2000) of all log entries. This concentration may indicate a repetitive operation, retry loop, or log storm.",
+          "confidence": 0.91,
+          "supporting_evidence": [
+            "E25 represents 47% of all log events",
+            "Template: <*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.osapi_compute.wsgi.server"
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server"
+          ],
+          "time_seconds": 1.437,
+          "tokens": {
+            "prompt": 609,
+            "completion": 224,
+            "total": 833
+          },
+          "success": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "label": "Google Gemini 2.5 Flash",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "total_time_seconds": 3.156,
+      "avg_time_per_scenario": 0.351,
+      "total_tokens": {
+        "prompt": 6172,
+        "completion": 1745,
+        "total": 7917
+      },
+      "scenarios_analyzed": 9,
+      "successful_analyses": 9,
+      "failed_analyses": 0,
+      "avg_confidence": 0.9111,
+      "anomalies_detected": 9,
+      "problems_solved": 9,
+      "results": [
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "error-burst-2017-05-16 00:01",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:01, indicating potential system instability.",
+          "confidence": 0.88,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache"
+          ],
+          "time_seconds": 0.875,
+          "tokens": {
+            "prompt": 641,
+            "completion": 212,
+            "total": 853
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "error-burst-2017-05-16 00:05",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:05, indicating potential system instability.",
+          "confidence": 0.89,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache"
+          ],
+          "time_seconds": 1.063,
+          "tokens": {
+            "prompt": 641,
+            "completion": 210,
+            "total": 851
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "error-burst-2017-05-16 00:09",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache, nova.compute.manager. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:09, indicating potential system instability.",
+          "confidence": 0.89,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache, nova.compute.manager"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache",
+            "Cascading latency from dependent service nova.compute.manager"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache",
+            "nova.compute.manager"
+          ],
+          "time_seconds": 1.063,
+          "tokens": {
+            "prompt": 663,
+            "completion": 208,
+            "total": 871
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "error-burst-2017-05-16 00:12",
+          "diagnosis": "Detected error burst detected (3 errors in 1-minute window) impacting nova.virt.libvirt.imagecache. Underlying cause: A burst of 3 error/warning log entries was detected within a 1-minute window starting at 2017-05-16 00:12, indicating potential system instability.",
+          "confidence": 0.91,
+          "supporting_evidence": [
+            "3 errors in 1-minute window",
+            "Affected components: nova.virt.libvirt.imagecache"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.virt.libvirt.imagecache"
+          ],
+          "affected_services": [
+            "nova.virt.libvirt.imagecache"
+          ],
+          "time_seconds": 1.406,
+          "tokens": {
+            "prompt": 642,
+            "completion": 203,
+            "total": 845
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "slow-api-responses",
+          "diagnosis": "Detected api latency anomaly (27 slow responses detected) impacting nova.osapi_compute.wsgi.server, nova.metadata.wsgi.server. Underlying cause: 27 API responses exceeded the baseline latency threshold of 0.436s (mean=0.234s, stdev=0.101s). This may indicate backend congestion or resource exhaustion.",
+          "confidence": 0.93,
+          "supporting_evidence": [
+            "27 responses above 0.436s threshold",
+            "Mean response time: 0.234s",
+            "Max response time: 0.712s",
+            "41 HTTP error responses (4xx/5xx)"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.osapi_compute.wsgi.server",
+            "Cascading latency from dependent service nova.metadata.wsgi.server"
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server",
+            "nova.metadata.wsgi.server"
+          ],
+          "time_seconds": 0.765,
+          "tokens": {
+            "prompt": 1016,
+            "completion": 164,
+            "total": 1180
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "http-error-responses",
+          "diagnosis": "Detected http error responses detected (41 errors) impacting nova.osapi_compute.wsgi.server, nova.metadata.wsgi.server. Underlying cause: Detected 41 HTTP error responses (status >= 400). Status distribution: {404: 41}",
+          "confidence": 0.95,
+          "supporting_evidence": [
+            "41x HTTP 404"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.osapi_compute.wsgi.server",
+            "Cascading latency from dependent service nova.metadata.wsgi.server"
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server",
+            "nova.metadata.wsgi.server"
+          ],
+          "time_seconds": 1.047,
+          "tokens": {
+            "prompt": 958,
+            "completion": 190,
+            "total": 1148
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "resource-high-utilization",
+          "diagnosis": "Detected high resource utilization detected (9 entries) impacting nova.compute.resource_tracker. Underlying cause: Resource tracking data shows 9 entries with utilization above 80% for one or more resources (vCPU, RAM, disk).",
+          "confidence": 0.91,
+          "supporting_evidence": [
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB",
+            "Disk: 20GB/15GB"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.compute.resource_tracker"
+          ],
+          "affected_services": [
+            "nova.compute.resource_tracker"
+          ],
+          "time_seconds": 0.65,
+          "tokens": {
+            "prompt": 689,
+            "completion": 181,
+            "total": 870
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "disk-overcommit",
+          "diagnosis": "Detected disk over-commitment detected impacting nova.compute.resource_tracker. Underlying cause: Disk used exceeds physical disk capacity, indicating thin provisioning overcommit that could lead to I/O failures.",
+          "confidence": 0.9,
+          "supporting_evidence": [
+            "Disk used exceeds physical capacity"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.compute.resource_tracker"
+          ],
+          "affected_services": [
+            "nova.compute.resource_tracker"
+          ],
+          "time_seconds": 0.75,
+          "tokens": {
+            "prompt": 313,
+            "completion": 184,
+            "total": 497
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "Google Gemini 2.5 Flash",
+          "scenario_id": "event-flood-E25",
+          "diagnosis": "Detected log event concentration: e25 accounts for 47% of all logs impacting nova.osapi_compute.wsgi.server. Underlying cause: Event template 'E25' (<*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>) comprises 47% (931/2000) of all log entries. This concentration may indicate a repetitive operation, retry loop, or log storm.",
+          "confidence": 0.94,
+          "supporting_evidence": [
+            "E25 represents 47% of all log events",
+            "Template: <*> \"GET <*>\" status: <*> len: <*> time: <*>.<*>"
+          ],
+          "alternative_causes": [
+            "Cascading latency from dependent service nova.osapi_compute.wsgi.server"
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server"
+          ],
+          "time_seconds": 0.875,
+          "tokens": {
+            "prompt": 609,
+            "completion": 193,
+            "total": 802
+          },
+          "success": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "label": "DeepSeek V3 (OpenRouter)",
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-chat-v3-0324",
+      "total_time_seconds": 50.985,
+      "avg_time_per_scenario": 5.665,
+      "total_tokens": {
+        "prompt": 7620,
+        "completion": 2386,
+        "total": 10006
+      },
+      "scenarios_analyzed": 9,
+      "successful_analyses": 9,
+      "failed_analyses": 0,
+      "avg_confidence": 0.8389,
+      "anomalies_detected": 9,
+      "problems_solved": 9,
+      "results": [
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "error-burst-2017-05-16 00:01",
+          "diagnosis": "Missing or corrupted base image file in nova image cache",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "All error messages reference the same missing file path: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+            "Errors occurred in rapid succession (3 within 50 seconds), suggesting a systemic issue rather than random file access problems",
+            "All errors originate from the nova.virt.libvirt.imagecache component which manages base image files"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Filesystem permission issue preventing access to the base file",
+              "confidence": 0.4
+            },
+            {
+              "cause": "Race condition during concurrent image operations",
+              "confidence": 0.3
+            },
+            {
+              "cause": "Underlying storage system failure",
+              "confidence": 0.2
+            }
+          ],
+          "affected_services": [
+            "nova-compute",
+            "instance provisioning"
+          ],
+          "time_seconds": 11.329,
+          "tokens": {
+            "prompt": 757,
+            "completion": 278,
+            "total": 1035
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "error-burst-2017-05-16 00:05",
+          "diagnosis": "Missing or deleted base image file in nova image cache",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "All error messages reference the same missing file path: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+            "Errors originate from nova.virt.libvirt.imagecache component which manages base images",
+            "Consistent error pattern suggests a persistent missing file condition rather than transient issue"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Filesystem corruption affecting the base image directory",
+              "confidence": 0.3
+            },
+            {
+              "cause": "Race condition during image cleanup operations",
+              "confidence": 0.2
+            },
+            {
+              "cause": "Manual deletion of base image by operator",
+              "confidence": 0.15
+            }
+          ],
+          "affected_services": [
+            "nova-compute",
+            "instance launch operations"
+          ],
+          "time_seconds": 10.875,
+          "tokens": {
+            "prompt": 757,
+            "completion": 263,
+            "total": 1020
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "error-burst-2017-05-16 00:09",
+          "diagnosis": "Instance base file corruption or deletion leading to synchronization mismatch between database and hypervisor state",
+          "confidence": 0.75,
+          "supporting_evidence": [
+            "Repeated warnings about unknown base file in image cache",
+            "Instance power state synchronization mismatch (1 in DB vs 0 on hypervisor)",
+            "Both errors occurred within same minute suggesting related timing",
+            "Both components (imagecache and compute.manager) handle instance disk state"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Filesystem corruption affecting instance storage",
+              "confidence": 0.6
+            },
+            {
+              "cause": "Race condition during instance migration",
+              "confidence": 0.5
+            },
+            {
+              "cause": "Unauthorized manual deletion of instance files",
+              "confidence": 0.4
+            }
+          ],
+          "affected_services": [
+            "nova-compute",
+            "instance storage management",
+            "instance power state tracking"
+          ],
+          "time_seconds": 12.704,
+          "tokens": {
+            "prompt": 744,
+            "completion": 252,
+            "total": 996
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "error-burst-2017-05-16 00:12",
+          "diagnosis": "Missing base image file in the nova image cache directory",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "All error messages reference the same missing file: /var/lib/nova/instances/_base/a489c868f0c37da93b76227c91bb03908ac0e742",
+            "Errors originate from nova.virt.libvirt.imagecache component which manages base image files",
+            "Consistent error pattern suggests a systemic issue rather than transient failures"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Filesystem corruption causing file disappearance",
+              "confidence": 0.3
+            },
+            {
+              "cause": "Manual deletion of the base image file by an operator",
+              "confidence": 0.4
+            },
+            {
+              "cause": "Race condition in image cache management",
+              "confidence": 0.2
+            }
+          ],
+          "affected_services": [
+            "nova-compute",
+            "instance launch operations"
+          ],
+          "time_seconds": 13.516,
+          "tokens": {
+            "prompt": 760,
+            "completion": 269,
+            "total": 1029
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "slow-api-responses",
+          "diagnosis": "High volume of POST requests to create servers causing API latency spikes",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "27 slow responses detected with POST /v2/.../servers operations",
+            "Multiple POST requests showing high latency (0.668s, 0.544s, 0.516s)",
+            "41 HTTP error responses suggest potential overload conditions",
+            "All slow responses originate from same endpoint (nova.osapi_compute.wsgi.server)"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Underlying compute resource contention during VM creation",
+              "confidence": 0.7
+            },
+            {
+              "cause": "Network latency between API and compute nodes",
+              "confidence": 0.6
+            },
+            {
+              "cause": "Database performance issues during server creation transactions",
+              "confidence": 0.65
+            }
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server",
+            "nova.metadata.wsgi.server"
+          ],
+          "time_seconds": 13.234,
+          "tokens": {
+            "prompt": 1438,
+            "completion": 281,
+            "total": 1719
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "http-error-responses",
+          "diagnosis": "Incorrect API version or endpoint configuration in Nova services",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "All errors are HTTP 404 (Not Found) status codes",
+            "Errors occur across both nova.osapi_compute.wsgi.server and nova.metadata.wsgi.server components",
+            "Pattern includes both GET requests for user_data and POST requests for os-server-external-events",
+            "Requests reference API version '2013-10-17' which may be outdated",
+            "Project ID 'e9746973ac574c6b8a9e8857f56a7608' appears in failing POST requests"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Misconfigured load balancer routing requests to wrong endpoints",
+              "confidence": 0.4
+            },
+            {
+              "cause": "Temporary service degradation during API version upgrade",
+              "confidence": 0.35
+            },
+            {
+              "cause": "Incorrect client configuration using deprecated API versions",
+              "confidence": 0.3
+            }
+          ],
+          "affected_services": [
+            "nova-api",
+            "nova-metadata-api"
+          ],
+          "time_seconds": 15.515,
+          "tokens": {
+            "prompt": 1291,
+            "completion": 300,
+            "total": 1591
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "resource-high-utilization",
+          "diagnosis": "Disk capacity reporting inconsistency - reported disk usage exceeds total capacity",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "Multiple samples show disk usage (20GB) exceeding total capacity (15GB)",
+            "Consistent pattern across all 9 high utilization alerts",
+            "RAM utilization normal (4%) while disk shows impossible overutilization"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Measurement unit mismatch (GB vs GiB)",
+              "confidence": 0.3
+            },
+            {
+              "cause": "Filesystem corruption causing incorrect usage reporting",
+              "confidence": 0.2
+            },
+            {
+              "cause": "Hypervisor-level disk accounting error",
+              "confidence": 0.25
+            }
+          ],
+          "affected_services": [
+            "nova-compute",
+            "resource tracking services",
+            "monitoring/alerting systems"
+          ],
+          "time_seconds": 17.641,
+          "tokens": {
+            "prompt": 828,
+            "completion": 237,
+            "total": 1065
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "disk-overcommit",
+          "diagnosis": "Incorrect disk overcommit ratio configuration in nova-compute",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "Disk used exceeds physical capacity",
+            "Multiple overcommit entries (9) detected",
+            "Affected component points to nova.compute.resource_tracker"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Physical disk failure causing capacity misreporting",
+              "confidence": 0.3
+            },
+            {
+              "cause": "Accounting error in disk usage tracking",
+              "confidence": 0.4
+            },
+            {
+              "cause": "Malicious activity artificially inflating disk usage",
+              "confidence": 0.1
+            }
+          ],
+          "affected_services": [
+            "nova-compute",
+            "virtual machine instances"
+          ],
+          "time_seconds": 15.375,
+          "tokens": {
+            "prompt": 279,
+            "completion": 194,
+            "total": 473
+          },
+          "success": true,
+          "error": null
+        },
+        {
+          "model": "DeepSeek V3 (OpenRouter)",
+          "scenario_id": "event-flood-E25",
+          "diagnosis": "High frequency of GET /v2/<project_id>/servers/detail API requests from a single IP (10.11.10.1) causing disproportionate log volume",
+          "confidence": 0.85,
+          "supporting_evidence": [
+            "47% of all logs are E25 events",
+            "All E25 events originate from 10.11.10.1",
+            "Identical endpoint pattern (/v2/<project_id>/servers/detail) across all E25 events",
+            "Consistent response length (1893 bytes) suggests identical response payloads",
+            "Request timing suggests rapid polling (sub-second intervals)"
+          ],
+          "alternative_causes": [
+            {
+              "cause": "Misconfigured client application aggressively polling server details",
+              "confidence": 0.7
+            },
+            {
+              "cause": "Legitimate bulk operation requiring frequent server detail checks",
+              "confidence": 0.3
+            },
+            {
+              "cause": "Load balancer or proxy misconfiguration duplicating requests",
+              "confidence": 0.2
+            }
+          ],
+          "affected_services": [
+            "nova.osapi_compute.wsgi.server",
+            "Potential impact on Nova API performance under sustained load"
+          ],
+          "time_seconds": 22.766,
+          "tokens": {
+            "prompt": 766,
+            "completion": 312,
+            "total": 1078
+          },
+          "success": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "fastest_model": {
+      "label": "Google Gemini 2.5 Flash",
+      "time": 3.156
+    },
+    "most_confident_model": {
+      "label": "Google Gemini 2.5 Flash",
+      "confidence": 0.9111
+    },
+    "most_economical_model": {
+      "label": "Google Gemini 2.5 Flash",
+      "tokens": 7917
+    },
+    "most_anomalies_model": {
+      "label": "OpenAI GPT-4o Mini",
+      "count": 9
+    },
+    "most_problems_solved": {
+      "label": "OpenAI GPT-4o Mini",
+      "count": 9
+    },
+    "leaderboard": [
+      {
+        "label": "Google Gemini 2.5 Flash",
+        "score": 315.95,
+        "avg_confidence": 0.9111,
+        "total_time": 3.156,
+        "total_tokens": 7917,
+        "anomalies": 9,
+        "problems_solved": 9
+      },
+      {
+        "label": "OpenAI GPT-4o Mini",
+        "score": 312.11,
+        "avg_confidence": 0.9078,
+        "total_time": 5.172,
+        "total_tokens": 8015,
+        "anomalies": 9,
+        "problems_solved": 9
+      },
+      {
+        "label": "DeepSeek V3 (OpenRouter)",
+        "score": 304.14,
+        "avg_confidence": 0.8389,
+        "total_time": 50.985,
+        "total_tokens": 10006,
+        "anomalies": 9,
+        "problems_solved": 9
+      }
+    ]
+  }
+}

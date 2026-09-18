@@ -30,10 +30,14 @@ class MockTracesProvider(TracesProvider):
 
 
 class JaegerTracesProvider(TracesProvider):
-    def __init__(self, jaeger_url: str) -> None:
+    def __init__(self, jaeger_url: str, fallback_sim=None) -> None:
         self.jaeger_url = jaeger_url
+        self._fallback = MockTracesProvider(fallback_sim) if fallback_sim else None
 
     async def get_recent_trace(self, service: str) -> Span:
+        if self._fallback and service in self._fallback._sim.services:
+            return await self._fallback.get_recent_trace(service)
+
         import httpx
         url = f"{self.jaeger_url}/api/traces"
         try:
@@ -45,10 +49,14 @@ class JaegerTracesProvider(TracesProvider):
                 response.raise_for_status()
                 data = response.json()
         except Exception:
+            if self._fallback:
+                return await self._fallback.get_recent_trace(service)
             return Span(name=f"{service}.fallback", service=service, duration_ms=0.0, status="OK")
 
         traces = data.get("data", [])
         if not traces:
+            if self._fallback:
+                return await self._fallback.get_recent_trace(service)
             return Span(name=f"{service}.no_trace", service=service, duration_ms=0.0, status="OK")
             
         trace = traces[0]

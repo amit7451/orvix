@@ -29,26 +29,29 @@ def get_simulation_registry() -> SimulationRegistry:
 
 @lru_cache
 def get_metrics_provider():
+    sim = get_simulation_registry()
     if settings.metrics_provider == "prometheus":
         from app.observability.metrics import PrometheusMetricsProvider
-        return PrometheusMetricsProvider(prometheus_url=settings.prometheus_url)
-    return MockMetricsProvider(get_simulation_registry())
+        return PrometheusMetricsProvider(prometheus_url=settings.prometheus_url, fallback_sim=sim)
+    return MockMetricsProvider(sim)
 
 
 @lru_cache
 def get_logs_provider():
+    sim = get_simulation_registry()
     if settings.logs_provider == "loki":
         from app.observability.logs import LokiLogsProvider
-        return LokiLogsProvider(loki_url=settings.loki_url)
-    return MockLogsProvider(get_simulation_registry())
+        return LokiLogsProvider(loki_url=settings.loki_url, fallback_sim=sim)
+    return MockLogsProvider(sim)
 
 
 @lru_cache
 def get_traces_provider():
+    sim = get_simulation_registry()
     if settings.traces_provider == "jaeger":
         from app.observability.tracing import JaegerTracesProvider
-        return JaegerTracesProvider(jaeger_url=settings.jaeger_url)
-    return MockTracesProvider(get_simulation_registry())
+        return JaegerTracesProvider(jaeger_url=settings.jaeger_url, fallback_sim=sim)
+    return MockTracesProvider(sim)
 
 
 @lru_cache

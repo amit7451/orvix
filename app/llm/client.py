@@ -72,7 +72,100 @@ class OpenAIBackend(LLMBackend):
             )
             resp.raise_for_status()
             data = resp.json()
-            return data["choices"][0]["message"]["content"]
+            usage = data.get("usage", {})
+            content = data["choices"][0]["message"]["content"]
+            # Attach usage metadata for callers that need it.
+            self._last_usage = usage
+            return content
+
+    @property
+    def last_usage(self) -> dict:
+        return getattr(self, "_last_usage", {})
+
+
+class GeminiBackend(LLMBackend):
+    """Google Gemini API backend via the REST generateContent endpoint."""
+
+    def __init__(self, api_key: str, model: str = "gemini-2.5-flash") -> None:
+        self._api_key = api_key
+        self._model = model
+        self._last_usage: dict = {}
+
+    async def complete(self, system: str, user: str) -> str:
+        url = (
+            f"https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{self._model}:generateContent?key={self._api_key}"
+        )
+        body = {
+            "contents": [{"parts": [{"text": f"{system}\n\n{user}"}]}],
+            "generationConfig": {
+                "responseMimeType": "application/json",
+                "temperature": 0.1,
+            },
+        }
+        async with httpx.AsyncClient(timeout=settings.llm_timeout_seconds) as client:
+            resp = await client.post(url, json=body)
+            resp.raise_for_status()
+            data = resp.json()
+            self._last_usage = data.get("usageMetadata", {})
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            return text
+
+    @property
+    def last_usage(self) -> dict:
+        return self._last_usage
+
+
+class OpenRouterBackend(LLMBackend):
+    """OpenRouter API backend (OpenAI-compatible endpoint)."""
+
+    def __init__(self, api_key: str, model: str = "deepseek/deepseek-chat-v3-0324") -> None:
+        self._api_key = api_key
+        self._model = model
+        self._last_usage: dict = {}
+
+    async def complete(self, system: str, user: str) -> str:
+        async with httpx.AsyncClient(timeout=settings.llm_timeout_seconds) as client:
+            resp = await client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {self._api_key}",
+                    "HTTP-Referer": "https://orvix.ai",
+                    "X-Title": "ORVIX Testing",
+                },
+                json={
+                    "model": self._model,
+                    "messages": [
+                        {"role": "system", "content": system},
+                        {"role": "user", "content": user},
+                    ],
+                    "response_format": {"type": "json_object"},
+                    "temperature": 0.1,
+                },
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            self._last_usage = data.get("usage", {})
+            content = data["choices"][0]["message"]["content"]
+            return content
+
+    @property
+    def last_usage(self) -> dict:
+        return self._last_usage
+
+
+def build_backend_for_provider(
+    provider: str, api_key: str, model: str | None = None
+) -> LLMBackend:
+    """Build a specific backend by provider name — used by the testing harness
+    to create isolated backends without touching the app-wide singleton."""
+    if provider == "openai":
+        return OpenAIBackend(api_key, model or "gpt-4o-mini")
+    if provider == "gemini":
+        return GeminiBackend(api_key, model or "gemini-2.5-flash")
+    if provider == "openrouter":
+        return OpenRouterBackend(api_key, model or "deepseek/deepseek-chat-v3-0324")
+    return MockLLMBackend()
 
 
 def build_backend() -> LLMBackend:
@@ -107,11 +200,19 @@ class LLMClient:
             except (asyncio.TimeoutError, httpx.HTTPError, json.JSONDecodeError, KeyError) as exc:
                 last_error = exc
                 logger.warning("LLM call failed (attempt %s): %s", attempt + 1, exc)
+                if isinstance(exc, httpx.HTTPStatusError) and exc.response.status_code in (401, 403, 404, 429):
+                    break
                 await asyncio.sleep(min(2**attempt, 5))
 
         logger.error("LLM call exhausted retries: %s", last_error)
         return {**fallback, "_llm_error": str(last_error)}
 
+    @property
+    def last_usage(self) -> dict:
+        """Proxy token usage from the underlying backend."""
+        return getattr(self._backend, "last_usage", {})
+
 
 def build_llm_client() -> LLMClient:
     return LLMClient(build_backend())
+

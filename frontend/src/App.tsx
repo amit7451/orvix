@@ -12,6 +12,7 @@ import { AnalyticsPage } from './pages/AnalyticsPage';
 import { KnowledgePage } from './pages/KnowledgePage';
 import { ToolsPage } from './pages/ToolsPage';
 import { NotificationsPage } from './pages/NotificationsPage';
+import { TestingPage } from './pages/TestingPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/knowledge" element={<KnowledgePage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/testing" element={<TestingPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
